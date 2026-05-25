@@ -12,7 +12,7 @@
         }
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #0d0d1a;
+            background: #050510;
             color: #fff;
             overflow-x: hidden;
             display: flex;
@@ -21,352 +21,285 @@
             min-height: 100vh;
         }
 
-        /* SCREEN 1: AMPLOP / SCAN QR PREVIEW */
+        /* Latar Belakang Bintang Bergerak sesuai Video */
+        .bg-stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, #111126 0%, #050510 100%);
+            z-index: -1;
+            overflow: hidden;
+        }
+        .bg-stars::after {
+            content: "✨";
+            position: absolute;
+            font-size: 10px;
+            color: rgba(255, 255, 255, 0.3);
+            animation: floatBackground 20s linear infinite;
+        }
+
+        /* SCREEN 1: TOMBOL PEMBUKA (AMPLOP SURAT) */
         #envelope-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #0d0d1a;
+            background: #050510;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             z-index: 999;
-            transition: all 1s ease;
+            transition: opacity 0.8s ease;
         }
-        .qr-container {
-            background: #1a1a3a;
-            padding: 20px;
+        .qr-card-mock {
+            background: #101026;
+            padding: 25px;
             border-radius: 20px;
-            box-shadow: 0 0 30px rgba(255, 20, 147, 0.3);
+            border: 2px solid #ff1493;
+            box-shadow: 0 0 30px rgba(255, 20, 147, 0.4);
             text-align: center;
-            cursor: pointer;
-            transition: transform 0.3s;
+            width: 280px;
         }
-        .qr-container:hover {
-            transform: scale(1.05);
-        }
-        .qr-placeholder {
-            width: 200px;
-            height: 200px;
+        .qr-heart-box {
+            width: 160px;
+            height: 160px;
             background: #ff1493;
-            margin: 0 auto 15px;
-            border-radius: 10px;
+            margin: 0 auto 20px;
+            border-radius: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 50px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
-        }
-        .open-btn {
-            margin-top: 20px;
-            padding: 12px 30px;
-            background: #ff1493;
-            color: white;
-            border: none;
-            border-radius: 25px;
-            font-size: 16px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
-            transition: 0.3s;
-        }
-        .open-btn:hover {
-            background: #ff69b4;
+            font-size: 65px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
+            animation: pulse 1.2s infinite alternate;
         }
 
-        /* SCREEN 2: MATRIX COUNTDOWN & TEXT */
+        /* SCREEN 2: MATRIX COUNTDOWN */
         #matrix-screen {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #050510;
+            background: #020208;
             display: none;
             justify-content: center;
             align-items: center;
             z-index: 998;
             flex-direction: column;
         }
-        .matrix-bg {
+        .matrix-rain {
             position: absolute;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(255,20,147,0.1) 0%, rgba(0,0,0,0) 100%);
-            opacity: 0.5;
+            background: linear-gradient(180deg, rgba(255, 20, 147, 0.15) 0%, rgba(0,0,0,0) 100%);
             z-index: 1;
         }
-        .countdown-text {
-            font-size: 80px;
+        .countdown-num {
+            font-size: 100px;
+            font-weight: 900;
+            color: #ff1493;
+            text-shadow: 0 0 30px #ff1493;
+            z-index: 2;
+        }
+        .typing-text {
+            font-size: 45px;
             font-weight: bold;
             color: #ff1493;
             text-shadow: 0 0 20px #ff1493;
-            z-index: 2;
-            animation: pulse 1s infinite alternate;
-        }
-        .hbd-text {
-            font-size: 40px;
-            font-weight: bold;
-            color: #ff1493;
-            text-shadow: 0 0 15px #ff1493;
             text-align: center;
             z-index: 2;
             display: none;
-            line-height: 1.5;
         }
 
-        /* SCREEN 3: UTAMA (SURAT & ALBUM) */
+        /* SCREEN 3: KONTEN UTAMA */
         #main-content {
             display: none;
             width: 100%;
-            max-width: 450px;
+            max-width: 410px;
             padding: 20px;
             flex-direction: column;
             align-items: center;
             text-align: center;
             opacity: 0;
-            transition: opacity 1.5s ease;
+            transition: opacity 1s ease;
         }
-        .star-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle, #1a1a3a 0%, #050510 100%);
-            z-index: -1;
-        }
-        
-        /* Musik Box */
-        .music-box {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px;
-            border-radius: 20px;
-            width: 100%;
-            margin-bottom: 30px;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-        .track-list {
-            display: flex;
-            justify-content: space-around;
-            margin-top: 10px;
-        }
-        .track-btn {
-            background: #ff1493;
-            border: none;
-            color: white;
-            padding: 8px 15px;
+
+        /* Kotak Putih Surat yang Bisa Diklik */
+        .white-letter-box {
+            background: #ffffff;
+            color: #333;
+            padding: 25px;
             border-radius: 15px;
+            width: 100%;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+            margin-bottom: 40px;
             cursor: pointer;
-            font-size: 12px;
-            transition: 0.3s;
+            transition: transform 0.5s ease;
+            position: relative;
         }
-        .track-btn.active {
-            background: #fff;
+        .letter-content {
+            display: none;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+            line-height: 1.6;
+            border-top: 1px dashed #ccc;
+            padding-top: 15px;
+        }
+
+        /* ALBUM FOTO TUMPUK 3D BENTUK HATI (PERSIS DI VIDEO) */
+        .album-title {
             color: #ff1493;
             font-weight: bold;
-            box-shadow: 0 0 10px #ff1493;
+            font-size: 16px;
+            margin-bottom: 25px;
+            text-shadow: 0 0 10px rgba(255, 20, 147, 0.3);
         }
-
-        /* Surat Membalik (Flip Card) */
-        .card-container {
-            width: 100%;
-            height: 250px;
-            perspective: 1000px;
-            margin-bottom: 40px;
-        }
-        .card-inner {
+        .gallery-container {
             position: relative;
             width: 100%;
-            height: 100%;
-            text-align: center;
-            transition: transform 0.8s;
-            transform-style: preserve-3d;
-            cursor: pointer;
-        }
-        .card-inner.flipped {
-            transform: rotateY(180deg);
-        }
-        .card-front, .card-back {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            -webkit-backface-visibility: hidden;
-            backface-visibility: hidden;
-            border-radius: 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
-        }
-        .card-front {
-            background: white;
-            color: #333;
-        }
-        .card-back {
-            background: #ff1493;
-            color: white;
-            transform: rotateY(180deg);
-        }
-
-        /* Foto Efek Love */
-        .heart-gallery {
-            position: relative;
-            width: 100%;
-            height: 350px;
-            margin-top: 20px;
+            height: 380px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
         .heart-photo {
             position: absolute;
-            width: 70px;
-            height: 70px;
+            width: 140px;
+            height: 180px;
             object-fit: cover;
-            border-radius: 10px;
-            border: 2px solid white;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-            transition: transform 0.5s ease;
+            border-radius: 12px;
+            border: 4px solid #fff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: scale(0.3) rotate(0deg); /* Kondisi awal menguncup ditengah */
+            opacity: 0;
         }
 
+        /* Trigger Mekar Membentuk Pola Hati seperti di Detik 00:35 */
+        .gallery-container.scattered .photo-1 { transform: translate(0px, -90px) rotate(-5deg) scale(1); opacity: 1; z-index: 6;}
+        .gallery-container.scattered .photo-2 { transform: translate(-100px, -40px) rotate(-15deg) scale(1); opacity: 1; z-index: 5;}
+        .gallery-container.scattered .photo-3 { transform: translate(100px, -40px) rotate(15deg) scale(1); opacity: 1; z-index: 5;}
+        .gallery-container.scattered .photo-4 { transform: translate(-110px, 60px) rotate(-10deg) scale(1); opacity: 1; z-index: 4;}
+        .gallery-container.scattered .photo-5 { transform: translate(110px, 60px) rotate(10deg) scale(1); opacity: 1; z-index: 4;}
+        .gallery-container.scattered .photo-6 { transform: translate(0px, 120px) rotate(5deg) scale(1); opacity: 1; z-index: 6;}
+
         @keyframes pulse {
-            from { transform: scale(0.9); opacity: 0.7; }
-            to { transform: scale(1.1); opacity: 1; }
+            from { transform: scale(0.95); }
+            to { transform: scale(1.05); box-shadow: 0 0 40px rgba(255, 20, 147, 0.6); }
         }
     </style>
 </head>
 <body>
 
-    <audio id="myAudio1" src="fearless.mp3" loop></audio>
-    <audio id="myAudio2" src="Enchanted.mp3" loop></audio>
-    <audio id="myAudio3" src="shantyapril.mp3" loop></audio>
+    <audio id="back-sound" src="fearless.mp3" loop></audio>
+
+    <div class="bg-stars"></div>
 
     <div id="envelope-screen">
-        <div class="qr-container" onclick="startCelebration()">
-            <div class="qr-placeholder">❤️</div>
-            <h2 style="color: white; margin-bottom: 5px;">Kado Spesial Untukmu</h2>
-            <p style="color: #aaa; font-size: 14px;">Ketuk untuk membuka surat</p>
+        <div class="qr-card-mock" onclick="mulaiKejutan()">
+            <div class="qr-heart-box">❤️</div>
+            <h3 style="margin-bottom: 5px;">HBD-pikachu-</h3>
+            <p style="color: #888; font-size: 13px; margin-bottom: 15px;">Ketuk tombol untuk membuka</p>
+            <button style="background: #ff1493; border:none; color:white; padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; width:100%;">Buka Kado ✨</button>
         </div>
-        <button class="open-btn" onclick="startCelebration()">Buka Surat ❤️</button>
     </div>
 
     <div id="matrix-screen">
-        <div class="matrix-bg"></div>
-        <div id="countdown" class="countdown-text">3</div>
-        <div id="hbd-typing" class="hbd-text"></div>
+        <div class="matrix-rain"></div>
+        <div id="countdown-number" class="countdown-num">3</div>
+        <div id="text-anim" class="typing-text"></div>
     </div>
 
-    <div class="star-bg"></div>
     <div id="main-content">
         
-        <div class="music-box">
-            <p id="song-title" style="font-size: 14px; font-weight: bold; color: #ff1493;">🎵 Memutar: Lagu Utama</p>
-            <div class="track-list">
-                <button id="btn1" class="track-btn active" onclick="playTrack(1)">fearless-Taylor swift</button>
-                <button id="btn2" class="track-btn" onclick="playTrack(2)">Enchanted-Taylor swift</button>
-                <button id="btn3" class="track-btn" onclick="playTrack(3)">For you</button>
+        <div class="white-letter-box" onclick="bukaSurat(this)">
+            <span style="font-size: 40px;">✉️</span>
+            <h3 style="margin-top: 5px; color: #111;">Klik untuk Baca Surat</h3>
+            <div class="letter-content" id="isi-surat">
+                <strong>Happy Birthday, Sayang! ❤️</strong><br><br>
+                "Semoga di umur yang baru ini kamu selalu diberikan kebahagiaan, kesehatan, dan kelancaran di setiap urusanmu. Terima kasih sudah selalu ada dan berjuang bersamaku sampai hari ini. Tetap jadi pelengkap indahnya hariku ya. I Love You So Much! ✨"
             </div>
         </div>
 
-        <div class="card-container">
-            <div class="card-inner" id="flipCard" onclick="toggleCard()">
-                <div class="card-front">
-                    <span style="font-size: 50px;">✉️</span>
-                    <h3 style="margin-top: 10px;">Klik untuk Baca Surat</h3>
-                </div>
-                <div class="card-back">
-                    <h3>Happy Birthday, Sayang! ❤️</h3>
-                    <p style="font-size: 14px; margin-top: 10px; font-style: italic;">
-                        "Semoga di umur yang baru ini kamu selalu bahagia, sehat, dan dilancarkan segala urusannya. Terima kasih sudah ada dan berjuang bersamaku sampai hari ini. I Love You! ✨"
-                    </p>
-                </div>
-            </div>
-        </div>
-
-        <p style="color: #ff1493; font-weight: bold; margin-bottom: 10px;">✨ Album Foto Kenangan mywife ✨</p>
-        <div class="heart-gallery">
-            <img class="heart-photo" src="pika6.jpg" style="transform: translate(0px, -80px) scale(1.1); z-index: 5;" alt="1">
-            <img class="heart-photo" src="pika4.jpg" style="transform: translate(-60px, -50px);" alt="2">
-            <img class="heart-photo" src="pika1.jpg" style="transform: translate(60px, -50px);" alt="3">
-            <img class="heart-photo" src="pika2.jpg" style="transform: translate(-90px, 10px);" alt="4">
-            <img class="heart-photo" src="pika3.jpg" style="transform: translate(90px, 10px);" alt="5">
-            <img class="heart-photo" src="pika5.jpg" style="transform: translate(-50px, 70px);" alt="6">
-            <img class="heart-photo" src="pika7.jpg" style="transform: translate(50px, 70px);" alt="7">
-            <img class="heart-photo" src="pika8.jpg" style="transform: translate(0px, 110px);" alt="8">
+        <p class="album-title">✨ Album Foto Kenangan Kita ✨</p>
+        <div class="gallery-container" id="album-foto">
+            <img class="heart-photo photo-1" src="pika1.jpg" alt="Foto 1">
+            <img class="heart-photo photo-2" src="pika2.jpg" alt="Foto 2">
+            <img class="heart-photo photo-3" src="pika3.jpg" alt="Foto 3">
+            <img class="heart-photo photo-4" src="pika4.jpg" alt="Foto 4">
+            <img class="heart-photo photo-5" src="pika5.jpg" alt="Foto 5">
+            <img class="heart-photo photo-6" src="pika6.jpg" alt="Foto 6">
         </div>
 
     </div>
 
     <script>
-        let currentAudio = document.getElementById('myAudio1');
+        const lagu = document.getElementById('back-sound');
 
-        function startCelebration() {
-            // Sembunyikan layar amplop pertama
-            document.getElementById('envelope-screen').style.display = 'none';
-            
-            // Nyalakan musik otomatis
-            currentAudio.play().catch(e => console.log("Autoplay dicegah oleh browser"));
+        function mulaiKejutan() {
+            document.getElementById('envelope-screen').style.opacity = '0';
+            setTimeout(() => {
+                document.getElementById('envelope-screen').style.display = 'none';
+            }, 800);
 
-            // Tampilkan layar hitung mundur (Matrix)
-            const matrixScreen = document.getElementById('matrix-screen');
-            matrixScreen.style.display = 'flex';
+            // Putar musik mp3 kamu
+            lagu.play().catch(e => console.log("Izin audio aktif"));
 
-            // Logika Hitung Mundur 3, 2, 1
-            let count = 3;
-            const countdownEl = document.getElementById('countdown');
-            
+            // Munculkan Matrix Hitung Mundur
+            const matrix = document.getElementById('matrix-screen');
+            matrix.style.display = 'flex';
+
+            let angka = 3;
+            const targetAngka = document.getElementById('countdown-number');
+
             let timer = setInterval(() => {
-                count--;
-                if (count > 0) {
-                    countdownEl.innerText = count;
+                angka--;
+                if (angka > 0) {
+                    targetAngka.innerText = angka;
                 } else {
                     clearInterval(timer);
-                    countdownEl.style.display = 'none';
-                    showTypingText();
+                    targetAngka.style.display = 'none';
+                    jalankanTeksMengetik();
                 }
             }, 1000);
         }
 
-        function showTypingText() {
-            const hbdEl = document.getElementById('hbd-typing');
-            hbdEl.style.display = 'block';
+        function jalankanTeksMengetik() {
+            const teksContainer = document.getElementById('text-anim');
+            teksContainer.style.display = 'block';
             
-            // Efek teks mengetik berjalan bergantian sesuai di video
-            const texts = ["HAPPY", "BIRTHDAY", "TO", "PIKACHU ❤️"];
-            let currentTextIdx = 0;
+            // Efek teks berganti berurutan persis di video tiktok-mu
+            const listTeks = ["HAPPY", "BIRTHDAY", "TO", "PIKACHU ❤️"];
+            let idx = 0;
 
-            function typeNextWord() {
-                if (currentTextIdx < texts.length) {
-                    hbdEl.innerText = texts[currentTextIdx];
-                    currentTextIdx++;
-                    setTimeout(typeNextWord, 900); // jeda per kata
+            function urutanTeks() {
+                if (idx < listTeks.length) {
+                    teksContainer.innerText = listTeks[idx];
+                    idx++;
+                    setTimeout(urutanTeks, 950);
                 } else {
-                    // Masuk ke konten utama setelah teks selesai
+                    // Masuk ke Halaman Utama Surat & Foto
                     document.getElementById('matrix-screen').style.display = 'none';
-                    const mainContent = document.getElementById('main-content');
-                    mainContent.style.display = 'flex';
-                    setTimeout(() => { mainContent.style.opacity = '1'; }, 500);
+                    const main = document.getElementById('main-content');
+                    main.style.display = 'flex';
+                    setTimeout(() => { 
+                        main.style.opacity = '1'; 
+                        // Jalankan efek foto menyebar membentuk hati setelah 1 detik halaman utama terbuka
+                        setTimeout(() => {
+                            document.getElementById('album-foto').classList.add('scattered');
+                        }, 1000);
+                    }, 100);
                 }
             }
-            typeNextWord();
+            urutanTeks();
         }
 
-        // Fungsi Pemutar Musik Playlist
-        function playTrack(trackNum) {
-            currentAudio.pause();
-            currentAudio.currentTime = 0;
-
-            document.querySelectorAll('.track-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById('btn' + trackNum).classList.add('active');
-
-            const titles = ["Lagu Utama", "Lagu Kedua", "Lagu Ketiga"];
-            document.getElementById('song-title').innerText = "🎵 Memutar: " + titles[trackNum - 1];
-
-            currentAudio = document.getElementById('myAudio' + trackNum);
-            currentAudio.play();
-        }
-
-        // Fungsi Membalik Surat
-        function toggleCard() {
-            document.getElementById('flipCard').classList.toggle('flipped');
+        // Fungsi klik buka kotak surat putih
+        function bukaSurat(elemen) {
+            const isi = document.getElementById('isi-surat');
+            if (isi.style.display === 'block') {
+                isi.style.display = 'none';
+                elemen.style.transform = 'scale(1)';
+            } else {
+                isi.style.display = 'block';
+                elemen.style.transform = 'scale(1.03)';
+            }
         }
     </script>
 </body>
