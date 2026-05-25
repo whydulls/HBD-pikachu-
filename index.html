@@ -1,1 +1,373 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Happy Birthday, Pikachu!🌸❤️</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #0d0d1a;
+            color: #fff;
+            overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
 
+        /* SCREEN 1: AMPLOP / SCAN QR PREVIEW */
+        #envelope-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #0d0d1a;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 999;
+            transition: all 1s ease;
+        }
+        .qr-container {
+            background: #1a1a3a;
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 0 30px rgba(255, 20, 147, 0.3);
+            text-align: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        .qr-container:hover {
+            transform: scale(1.05);
+        }
+        .qr-placeholder {
+            width: 200px;
+            height: 200px;
+            background: #ff1493;
+            margin: 0 auto 15px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 50px;
+            box-shadow: inset 0 0 20px rgba(0,0,0,0.3);
+        }
+        .open-btn {
+            margin-top: 20px;
+            padding: 12px 30px;
+            background: #ff1493;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(255, 20, 147, 0.4);
+            transition: 0.3s;
+        }
+        .open-btn:hover {
+            background: #ff69b4;
+        }
+
+        /* SCREEN 2: MATRIX COUNTDOWN & TEXT */
+        #matrix-screen {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #050510;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 998;
+            flex-direction: column;
+        }
+        .matrix-bg {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(255,20,147,0.1) 0%, rgba(0,0,0,0) 100%);
+            opacity: 0.5;
+            z-index: 1;
+        }
+        .countdown-text {
+            font-size: 80px;
+            font-weight: bold;
+            color: #ff1493;
+            text-shadow: 0 0 20px #ff1493;
+            z-index: 2;
+            animation: pulse 1s infinite alternate;
+        }
+        .hbd-text {
+            font-size: 40px;
+            font-weight: bold;
+            color: #ff1493;
+            text-shadow: 0 0 15px #ff1493;
+            text-align: center;
+            z-index: 2;
+            display: none;
+            line-height: 1.5;
+        }
+
+        /* SCREEN 3: UTAMA (SURAT & ALBUM) */
+        #main-content {
+            display: none;
+            width: 100%;
+            max-width: 450px;
+            padding: 20px;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            opacity: 0;
+            transition: opacity 1.5s ease;
+        }
+        .star-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle, #1a1a3a 0%, #050510 100%);
+            z-index: -1;
+        }
+        
+        /* Musik Box */
+        .music-box {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 15px;
+            border-radius: 20px;
+            width: 100%;
+            margin-bottom: 30px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .track-list {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 10px;
+        }
+        .track-btn {
+            background: #ff1493;
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: 0.3s;
+        }
+        .track-btn.active {
+            background: #fff;
+            color: #ff1493;
+            font-weight: bold;
+            box-shadow: 0 0 10px #ff1493;
+        }
+
+        /* Surat Membalik (Flip Card) */
+        .card-container {
+            width: 100%;
+            height: 250px;
+            perspective: 1000px;
+            margin-bottom: 40px;
+        }
+        .card-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.8s;
+            transform-style: preserve-3d;
+            cursor: pointer;
+        }
+        .card-inner.flipped {
+            transform: rotateY(180deg);
+        }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .card-front {
+            background: white;
+            color: #333;
+        }
+        .card-back {
+            background: #ff1493;
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        /* Foto Efek Love */
+        .heart-gallery {
+            position: relative;
+            width: 100%;
+            height: 350px;
+            margin-top: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .heart-photo {
+            position: absolute;
+            width: 70px;
+            height: 70px;
+            object-fit: cover;
+            border-radius: 10px;
+            border: 2px solid white;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+            transition: transform 0.5s ease;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(0.9); opacity: 0.7; }
+            to { transform: scale(1.1); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <audio id="myAudio1" src="fearless.mp3" loop></audio>
+    <audio id="myAudio2" src="Enchanted.mp3" loop></audio>
+    <audio id="myAudio3" src="shantyapril.mp3" loop></audio>
+
+    <div id="envelope-screen">
+        <div class="qr-container" onclick="startCelebration()">
+            <div class="qr-placeholder">❤️</div>
+            <h2 style="color: white; margin-bottom: 5px;">Kado Spesial Untukmu</h2>
+            <p style="color: #aaa; font-size: 14px;">Ketuk untuk membuka surat</p>
+        </div>
+        <button class="open-btn" onclick="startCelebration()">Buka Surat ❤️</button>
+    </div>
+
+    <div id="matrix-screen">
+        <div class="matrix-bg"></div>
+        <div id="countdown" class="countdown-text">3</div>
+        <div id="hbd-typing" class="hbd-text"></div>
+    </div>
+
+    <div class="star-bg"></div>
+    <div id="main-content">
+        
+        <div class="music-box">
+            <p id="song-title" style="font-size: 14px; font-weight: bold; color: #ff1493;">🎵 Memutar: Lagu Utama</p>
+            <div class="track-list">
+                <button id="btn1" class="track-btn active" onclick="playTrack(1)">fearless-Taylor swift</button>
+                <button id="btn2" class="track-btn" onclick="playTrack(2)">Enchanted-Taylor swift</button>
+                <button id="btn3" class="track-btn" onclick="playTrack(3)">For you</button>
+            </div>
+        </div>
+
+        <div class="card-container">
+            <div class="card-inner" id="flipCard" onclick="toggleCard()">
+                <div class="card-front">
+                    <span style="font-size: 50px;">✉️</span>
+                    <h3 style="margin-top: 10px;">Klik untuk Baca Surat</h3>
+                </div>
+                <div class="card-back">
+                    <h3>Happy Birthday, Sayang! ❤️</h3>
+                    <p style="font-size: 14px; margin-top: 10px; font-style: italic;">
+                        "Semoga di umur yang baru ini kamu selalu bahagia, sehat, dan dilancarkan segala urusannya. Terima kasih sudah ada dan berjuang bersamaku sampai hari ini. I Love You! ✨"
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <p style="color: #ff1493; font-weight: bold; margin-bottom: 10px;">✨ Album Foto Kenangan mywife ✨</p>
+        <div class="heart-gallery">
+            <img class="heart-photo" src="pika6.jpg" style="transform: translate(0px, -80px) scale(1.1); z-index: 5;" alt="1">
+            <img class="heart-photo" src="pika4.jpg" style="transform: translate(-60px, -50px);" alt="2">
+            <img class="heart-photo" src="pika1.jpg" style="transform: translate(60px, -50px);" alt="3">
+            <img class="heart-photo" src="pika2.jpg" style="transform: translate(-90px, 10px);" alt="4">
+            <img class="heart-photo" src="pika3.jpg" style="transform: translate(90px, 10px);" alt="5">
+            <img class="heart-photo" src="pika5.jpg" style="transform: translate(-50px, 70px);" alt="6">
+            <img class="heart-photo" src="pika7.jpg" style="transform: translate(50px, 70px);" alt="7">
+            <img class="heart-photo" src="pika8.jpg" style="transform: translate(0px, 110px);" alt="8">
+        </div>
+
+    </div>
+
+    <script>
+        let currentAudio = document.getElementById('myAudio1');
+
+        function startCelebration() {
+            // Sembunyikan layar amplop pertama
+            document.getElementById('envelope-screen').style.display = 'none';
+            
+            // Nyalakan musik otomatis
+            currentAudio.play().catch(e => console.log("Autoplay dicegah oleh browser"));
+
+            // Tampilkan layar hitung mundur (Matrix)
+            const matrixScreen = document.getElementById('matrix-screen');
+            matrixScreen.style.display = 'flex';
+
+            // Logika Hitung Mundur 3, 2, 1
+            let count = 3;
+            const countdownEl = document.getElementById('countdown');
+            
+            let timer = setInterval(() => {
+                count--;
+                if (count > 0) {
+                    countdownEl.innerText = count;
+                } else {
+                    clearInterval(timer);
+                    countdownEl.style.display = 'none';
+                    showTypingText();
+                }
+            }, 1000);
+        }
+
+        function showTypingText() {
+            const hbdEl = document.getElementById('hbd-typing');
+            hbdEl.style.display = 'block';
+            
+            // Efek teks mengetik berjalan bergantian sesuai di video
+            const texts = ["HAPPY", "BIRTHDAY", "TO", "PIKACHU ❤️"];
+            let currentTextIdx = 0;
+
+            function typeNextWord() {
+                if (currentTextIdx < texts.length) {
+                    hbdEl.innerText = texts[currentTextIdx];
+                    currentTextIdx++;
+                    setTimeout(typeNextWord, 900); // jeda per kata
+                } else {
+                    // Masuk ke konten utama setelah teks selesai
+                    document.getElementById('matrix-screen').style.display = 'none';
+                    const mainContent = document.getElementById('main-content');
+                    mainContent.style.display = 'flex';
+                    setTimeout(() => { mainContent.style.opacity = '1'; }, 500);
+                }
+            }
+            typeNextWord();
+        }
+
+        // Fungsi Pemutar Musik Playlist
+        function playTrack(trackNum) {
+            currentAudio.pause();
+            currentAudio.currentTime = 0;
+
+            document.querySelectorAll('.track-btn').forEach(btn => btn.classList.remove('active'));
+            document.getElementById('btn' + trackNum).classList.add('active');
+
+            const titles = ["Lagu Utama", "Lagu Kedua", "Lagu Ketiga"];
+            document.getElementById('song-title').innerText = "🎵 Memutar: " + titles[trackNum - 1];
+
+            currentAudio = document.getElementById('myAudio' + trackNum);
+            currentAudio.play();
+        }
+
+        // Fungsi Membalik Surat
+        function toggleCard() {
+            document.getElementById('flipCard').classList.toggle('flipped');
+        }
+    </script>
+</body>
+</html>
