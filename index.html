@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Happy Birthday, Pikachu!🌸❤️</title>
+    <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
     <style>
         * {
             box-sizing: border-box;
@@ -11,296 +12,282 @@
             padding: 0;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #050510;
-            color: #fff;
-            overflow-x: hidden;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        /* Latar Belakang Bintang Bergerak sesuai Video */
-        .bg-stars {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at center, #111126 0%, #050510 100%);
-            z-index: -1;
+            font-family: 'Poppins', sans-serif;
+            background: #000000;
+            color: #ffffff;
             overflow: hidden;
-        }
-        .bg-stars::after {
-            content: "✨";
-            position: absolute;
-            font-size: 10px;
-            color: rgba(255, 255, 255, 0.3);
-            animation: floatBackground 20s linear infinite;
-        }
-
-        /* SCREEN 1: TOMBOL PEMBUKA (AMPLOP SURAT) */
-        #envelope-screen {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: #050510;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            z-index: 999;
-            transition: opacity 0.8s ease;
-        }
-        .qr-card-mock {
-            background: #101026;
-            padding: 25px;
-            border-radius: 20px;
-            border: 2px solid #ff1493;
-            box-shadow: 0 0 30px rgba(255, 20, 147, 0.4);
-            text-align: center;
-            width: 280px;
-        }
-        .qr-heart-box {
-            width: 160px;
-            height: 160px;
-            background: #ff1493;
-            margin: 0 auto 20px;
-            border-radius: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
-            font-size: 65px;
-            box-shadow: inset 0 0 20px rgba(0,0,0,0.4);
-            animation: pulse 1.2s infinite alternate;
+            height: 100vh;
         }
 
-        /* SCREEN 2: MATRIX COUNTDOWN */
-        #matrix-screen {
+        .space-bg {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: #020208;
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 998;
-            flex-direction: column;
-        }
-        .matrix-rain {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(180deg, rgba(255, 20, 147, 0.15) 0%, rgba(0,0,0,0) 100%);
+            background: radial-gradient(circle at center, #111125 0%, #000000 100%);
             z-index: 1;
         }
-        .countdown-num {
-            font-size: 100px;
+        .stars {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: url('https://www.transparenttextures.com/patterns/stardust.png');
+            opacity: 0.4;
+            animation: moveStars 30s linear infinite;
+        }
+
+        .app-container {
+            position: relative;
+            width: 100%;
+            max-width: 420px;
+            height: 100vh;
+            z-index: 10;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        /* LAYER 1: QR WELCOME */
+        #layer-welcome {
+            position: absolute;
+            width: 90%;
+            max-width: 340px;
+            background: #11112a;
+            border-radius: 24px;
+            padding: 30px 20px;
+            text-align: center;
+            box-shadow: 0 15px 45px rgba(255, 20, 147, 0.2);
+            border: 1px solid rgba(255, 20, 147, 0.3);
+            transition: all 0.8s ease;
+            z-index: 100;
+        }
+        .ribbon-qr-box {
+            position: relative;
+            width: 180px;
+            height: 180px;
+            background: #ffffff;
+            margin: 0 auto 25px;
+            border-radius: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+        .ribbon-qr-box::before {
+            content: "💝";
+            position: absolute;
+            top: -20px;
+            font-size: 40px;
+        }
+        .qr-mock-pattern {
+            width: 140px;
+            height: 140px;
+            background: radial-gradient(circle, #ff1493 60%, transparent 65%);
+            background-size: 10px 10px;
+            mask-image: url('https://upload.wikimedia.org/wikipedia/commons/4/41/Left_heart_twemoji.svg');
+            -webkit-mask-image: url('https://upload.wikimedia.org/wikipedia/commons/4/41/Left_heart_twemoji.svg');
+            mask-size: contain;
+            -webkit-mask-size: contain;
+            mask-repeat: no-repeat;
+            -webkit-mask-repeat: no-repeat;
+            mask-position: center;
+            -webkit-mask-position: center;
+        }
+        .btn-buka {
+            background: linear-gradient(45deg, #ff1493, #ff69b4);
+            color: #fff;
+            border: none;
+            padding: 12px 35px;
+            font-size: 16px;
+            font-weight: 700;
+            border-radius: 50px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(255, 20, 147, 0.4);
+        }
+
+        /* LAYER 2: COUNTDOWN */
+        #layer-countdown {
+            position: absolute;
+            width: 100%; height: 100%;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 90;
+        }
+        .matrix-lines {
+            position: absolute;
+            width: 100%; height: 100%;
+            background: linear-gradient(180deg, rgba(255, 20, 147, 0.1) 0%, transparent 100%);
+            background-size: 20px 100%;
+            opacity: 0.7;
+        }
+        .cd-number {
+            font-size: 120px;
             font-weight: 900;
             color: #ff1493;
             text-shadow: 0 0 30px #ff1493;
-            z-index: 2;
+            animation: scalePulse 1s infinite ease-in-out;
         }
-        .typing-text {
-            font-size: 45px;
-            font-weight: bold;
+        .typing-word {
+            font-size: 50px;
+            font-weight: 800;
             color: #ff1493;
-            text-shadow: 0 0 20px #ff1493;
-            text-align: center;
-            z-index: 2;
+            text-shadow: 0 0 25px rgba(255, 20, 147, 0.8);
             display: none;
+            text-align: center;
         }
 
-        /* SCREEN 3: KONTEN UTAMA */
-        #main-content {
+        /* LAYER 3: MAIN SLIDESHOW */
+        #layer-main {
+            position: absolute;
+            width: 100%; height: 100%;
             display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 80;
+        }
+        .slide-page {
             width: 100%;
-            max-width: 410px;
-            padding: 20px;
+            display: none;
             flex-direction: column;
             align-items: center;
-            text-align: center;
-            opacity: 0;
-            transition: opacity 1s ease;
+            animation: fadeIn 0.8s ease forwards;
         }
+        .slide-page.active { display: flex; }
 
-        /* Kotak Putih Surat yang Bisa Diklik */
-        .white-letter-box {
-            background: #ffffff;
-            color: #333;
-            padding: 25px;
-            border-radius: 15px;
+        /* FLIP LETTER CARD */
+        .letter-card {
             width: 100%;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            margin-bottom: 40px;
-            cursor: pointer;
-            transition: transform 0.5s ease;
-            position: relative;
-        }
-        .letter-content {
-            display: none;
-            margin-top: 15px;
-            font-size: 14px;
-            color: #555;
-            line-height: 1.6;
-            border-top: 1px dashed #ccc;
-            padding-top: 15px;
-        }
-
-        /* ALBUM FOTO TUMPUK 3D BENTUK HATI (PERSIS DI VIDEO) */
-        .album-title {
-            color: #ff1493;
-            font-weight: bold;
-            font-size: 16px;
+            height: 180px;
+            perspective: 1000px;
             margin-bottom: 25px;
-            text-shadow: 0 0 10px rgba(255, 20, 147, 0.3);
+            cursor: pointer;
         }
-        .gallery-container {
+        .card-inner {
+            position: relative;
+            width: 100%; height: 100%;
+            text-align: center;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+        .card-inner.is-flipped { transform: rotateY(180deg); }
+        .card-front, .card-back {
+            position: absolute;
+            width: 100%; height: 100%;
+            -webkit-backface-visibility: hidden;
+            backface-visibility: hidden;
+            border-radius: 20px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5);
+        }
+        .card-front { background: #ffffff; color: #222; }
+        .card-back {
+            background: #ffffff; color: #222;
+            transform: rotateY(180deg);
+            font-family: 'Caveat', cursive;
+            font-size: 22px;
+            line-height: 1.4;
+        }
+
+        /* GRID DUA FOTO (SLIDE 1 & 2) */
+        .split-photos-box {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+            justify-content: center;
+        }
+        .split-frame {
+            width: 145px;
+            height: 190px;
+            background: #222;
+            border-radius: 16px;
+            overflow: hidden;
+            border: 4px solid #ffffff;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
+            transform: translateY(30px);
+            opacity: 0;
+            animation: slideUpIn 0.8s cubic-bezier(0.18, 0.89, 0.32, 1.28) forwards;
+        }
+        .split-frame img { width: 100%; height: 100%; object-fit: cover; }
+        .split-frame:nth-child(2) { animation-delay: 0.2s; }
+
+        /* VINYL PLAYER AUDIO INFO */
+        .vinyl-player {
+            position: absolute;
+            top: 40px; left: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.08);
+            padding: 6px 14px 6px 6px;
+            border-radius: 30px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+        .vinyl-disk {
+            width: 36px; height: 36px;
+            background: radial-gradient(circle, #111 30%, #333 40%, #111 50%, #444 60%, #111 70%);
+            border-radius: 50%;
+            animation: spin 4s linear infinite;
+            animation-play-state: paused;
+        }
+        .vinyl-text {
+            font-size: 11px;
+            font-weight: 600;
+            color: rgba(255,255,255,0.8);
+            max-width: 110px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .nav-circle-btn {
+            position: absolute;
+            bottom: 40px; right: 20px;
+            width: 50px; height: 50px;
+            background: #ffffff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+            border: none;
+        }
+        .nav-circle-btn::after { content: "➔"; color: #ff1493; font-size: 20px; font-weight: bold; }
+
+        /* LAYER AKHIR: ALBUM 8 FOTO BENTUK HATI SEMPURNA */
+        .heart-cloud-container {
             position: relative;
             width: 100%;
-            height: 380px;
+            height: 400px;
             display: flex;
             justify-content: center;
             align-items: center;
         }
-        .heart-photo {
+        .cloud-photo {
             position: absolute;
-            width: 140px;
-            height: 180px;
+            width: 65px; height: 65px;
             object-fit: cover;
-            border-radius: 12px;
-            border: 4px solid #fff;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
-            transition: all 1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            transform: scale(0.3) rotate(0deg); /* Kondisi awal menguncup ditengah */
+            border-radius: 8px;
+            border: 2px solid #ffffff;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.4);
+            transition: all 1.5s cubic-bezier(0.25, 1, 0.5, 1);
+            transform: translate(0, 0) scale(0.1);
             opacity: 0;
         }
 
-        /* Trigger Mekar Membentuk Pola Hati seperti di Detik 00:35 */
-        .gallery-container.scattered .photo-1 { transform: translate(0px, -90px) rotate(-5deg) scale(1); opacity: 1; z-index: 6;}
-        .gallery-container.scattered .photo-2 { transform: translate(-100px, -40px) rotate(-15deg) scale(1); opacity: 1; z-index: 5;}
-        .gallery-container.scattered .photo-3 { transform: translate(100px, -40px) rotate(15deg) scale(1); opacity: 1; z-index: 5;}
-        .gallery-container.scattered .photo-4 { transform: translate(-110px, 60px) rotate(-10deg) scale(1); opacity: 1; z-index: 4;}
-        .gallery-container.scattered .photo-5 { transform: translate(110px, 60px) rotate(10deg) scale(1); opacity: 1; z-index: 4;}
-        .gallery-container.scattered .photo-6 { transform: translate(0px, 120px) rotate(5deg) scale(1); opacity: 1; z-index: 6;}
-
-        @keyframes pulse {
-            from { transform: scale(0.95); }
-            to { transform: scale(1.05); box-shadow: 0 0 40px rgba(255, 20, 147, 0.6); }
-        }
-    </style>
-</head>
-<body>
-
-    <audio id="back-sound" src="fearless.mp3" loop></audio>
-
-    <div class="bg-stars"></div>
-
-    <div id="envelope-screen">
-        <div class="qr-card-mock" onclick="mulaiKejutan()">
-            <div class="qr-heart-box">❤️</div>
-            <h3 style="margin-bottom: 5px;">HBD-pikachu-</h3>
-            <p style="color: #888; font-size: 13px; margin-bottom: 15px;">Ketuk tombol untuk membuka</p>
-            <button style="background: #ff1493; border:none; color:white; padding:10px 20px; border-radius:20px; font-weight:bold; cursor:pointer; width:100%;">Buka Kado ✨</button>
-        </div>
-    </div>
-
-    <div id="matrix-screen">
-        <div class="matrix-rain"></div>
-        <div id="countdown-number" class="countdown-num">3</div>
-        <div id="text-anim" class="typing-text"></div>
-    </div>
-
-    <div id="main-content">
-        
-        <div class="white-letter-box" onclick="bukaSurat(this)">
-            <span style="font-size: 40px;">✉️</span>
-            <h3 style="margin-top: 5px; color: #111;">Klik untuk Baca Surat</h3>
-            <div class="letter-content" id="isi-surat">
-                <strong>Happy Birthday, Sayang! ❤️</strong><br><br>
-                "Semoga di umur yang baru ini kamu selalu diberikan kebahagiaan, kesehatan, dan kelancaran di setiap urusanmu. Terima kasih sudah selalu ada dan berjuang bersamaku sampai hari ini. Tetap jadi pelengkap indahnya hariku ya. I Love You So Much! ✨"
-            </div>
-        </div>
-
-        <p class="album-title">✨ Album Foto Kenangan Kita ✨</p>
-        <div class="gallery-container" id="album-foto">
-            <img class="heart-photo photo-1" src="pika1.jpg" alt="Foto 1">
-            <img class="heart-photo photo-2" src="pika2.jpg" alt="Foto 2">
-            <img class="heart-photo photo-3" src="pika3.jpg" alt="Foto 3">
-            <img class="heart-photo photo-4" src="pika4.jpg" alt="Foto 4">
-            <img class="heart-photo photo-5" src="pika5.jpg" alt="Foto 5">
-            <img class="heart-photo photo-6" src="pika6.jpg" alt="Foto 6">
-        </div>
-
-    </div>
-
-    <script>
-        const lagu = document.getElementById('back-sound');
-
-        function mulaiKejutan() {
-            document.getElementById('envelope-screen').style.opacity = '0';
-            setTimeout(() => {
-                document.getElementById('envelope-screen').style.display = 'none';
-            }, 800);
-
-            // Putar musik mp3 kamu
-            lagu.play().catch(e => console.log("Izin audio aktif"));
-
-            // Munculkan Matrix Hitung Mundur
-            const matrix = document.getElementById('matrix-screen');
-            matrix.style.display = 'flex';
-
-            let angka = 3;
-            const targetAngka = document.getElementById('countdown-number');
-
-            let timer = setInterval(() => {
-                angka--;
-                if (angka > 0) {
-                    targetAngka.innerText = angka;
-                } else {
-                    clearInterval(timer);
-                    targetAngka.style.display = 'none';
-                    jalankanTeksMengetik();
-                }
-            }, 1000);
-        }
-
-        function jalankanTeksMengetik() {
-            const teksContainer = document.getElementById('text-anim');
-            teksContainer.style.display = 'block';
-            
-            // Efek teks berganti berurutan persis di video tiktok-mu
-            const listTeks = ["HAPPY", "BIRTHDAY", "TO", "PIKACHU ❤️"];
-            let idx = 0;
-
-            function urutanTeks() {
-                if (idx < listTeks.length) {
-                    teksContainer.innerText = listTeks[idx];
-                    idx++;
-                    setTimeout(urutanTeks, 950);
-                } else {
-                    // Masuk ke Halaman Utama Surat & Foto
-                    document.getElementById('matrix-screen').style.display = 'none';
-                    const main = document.getElementById('main-content');
-                    main.style.display = 'flex';
-                    setTimeout(() => { 
-                        main.style.opacity = '1'; 
-                        // Jalankan efek foto menyebar membentuk hati setelah 1 detik halaman utama terbuka
-                        setTimeout(() => {
-                            document.getElementById('album-foto').classList.add('scattered');
-                        }, 1000);
-                    }, 100);
-                }
-            }
-            urutanTeks();
-        }
-
-        // Fungsi klik buka kotak surat putih
-        function bukaSurat(elemen) {
-            const isi = document.getElementById('isi-surat');
-            if (isi.style.display === 'block') {
-                isi.style.display = 'none';
-                elemen.style.transform = 'scale(1)';
-            } else {
-                isi.style.display = 'block';
-                elemen.style.transform = 'scale(1.03)';
-            }
-        }
-    </script>
-</body>
-</html>
+        /* Koordinat baru yang presisi menyusun 8 FOTO menjadi bentuk hati penuh */
+        .heart-cloud-container.assemble .p-1 { transform: translate(-35px, -75px) scale(1); opacity: 1; z-index: 10; }
+        .heart-cloud-container.assemble .p-2 { transform: translate(35px, -75px) scale(1); opacity: 1; z-index: 10; }
+        .heart-cloud-container.assemble .p-3 { transform: translate(-85px, -35px) scale(1); opacity: 1; z-index: 9; }
+        .heart-cloud-container.assemble .p-4 { transform: translate(85px, -35px) scale(1); opacity: 1; z-index: 9; }
+        .heart-cloud-container.assemble .p-5 { transform: translate(-75px, 20px) scale(1); opacity: 1; z-index: 8; }
+        .heart-cloud-container.assemble .p-6 { transform: translate(75px, 20px) scale(1); opacity:
